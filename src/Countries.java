@@ -17,31 +17,30 @@ public class Countries {
 
         for (String line : lines) {
             String[] columns = line.split("\\|");
-            String abbreviation = columns[1];
-            String name = columns[0];
+            String abbreviation = columns[0];
+            String name = columns[1];
             Country country = new Country(name, abbreviation);
-            if (countries.containsKey(name.substring(0, 1))) {
-                countries.get(name.substring(0,1)).add(country);
+            String firstLetter = name.substring(0,1);
+            if (countries.containsKey(firstLetter)) {
+                countries.get(firstLetter).add(country);
             } else {
                 ArrayList<Country> countryList = new ArrayList();
                 countryList.add(country);
-                countries.put(name.valueOf(name.charAt(0)), countryList);
+                countries.put(firstLetter, countryList);
             }
         }
             Scanner scanner = new Scanner(System.in);
             String placeLists = "";
             String l = "";
-            while (true) {
-                System.out.println("Enter a letter");
-                l = scanner.nextLine();
-                if (countries.containsKey(l)) {
-                    for (Country place : countries.get(l)) {
-                        placeLists += String.format("%s %s\n ", place.abbreviation, place.name);
-                    }
+
+            System.out.println("Enter a letter");
+            l = scanner.nextLine();
+            if (countries.containsKey(l)) {
+                for (Country place : countries.get(l)) {
+                    placeLists += String.format("%s %s\n ", place.abbreviation, place.name);
                 }
-                writeFile(String.format("%s_countries.txt", l), placeLists);
-                break;
             }
+            writeFile(String.format("%s_countries.txt", l), placeLists);
     }
 
     static String readFile(String fileName) {
